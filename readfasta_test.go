@@ -1,0 +1,48 @@
+package main
+
+import (
+	"testing"
+
+	"github.com/spf13/afero"
+	"github.com/stretchr/testify/assert"
+)
+
+var uniprotText = `>tr|A0A024R1R8|A0A024R1R8_HUMAN HCG2014768, isoform CRA_a OS=Homo sapiens (Human) OX=9606 GN=ENSG00000225528 PE=4 SV=1
+MSSHEGGKKKALKQPKKQAKEMDEEEKAFKQKQKEEQKKLEVLKAKVVGKGPLATGGIKK
+SGKK
+>sp|Q9BUL8|PDC10_HUMAN Programmed cell death protein 10 OS=Homo sapiens (Human) OX=9606 GN=PDCD10 PE=1 SV=1
+MRMTMEEMKNEAETTSMVSMPLYAVMYPVFNELERVNLSAAQTLRAAFIKAEKENPGLTQ
+DIIMKILEKKSVEVNFTESLLRMAADDVEEYMIERPEPEFQDLNEKARALKQILSKIPDE
+INDRVRFLQTIKDIASAIKELLDTVNNVFKKYQYQNRRALEHQKKEFVKYSKSFSDTLKT
+YFKDGKAINVFVSANRLIHQTNLILQTFKTVA
+`
+
+func TestReadFasta(t *testing.T) {
+	oldFs := FS
+	defer func() { FS = oldFs }()
+	FS = afero.NewMemMapFs()
+
+	// Create test directory and files.
+	FS.MkdirAll("test", 0755)
+	afero.WriteFile(
+		FS,
+		"test/uniprot.txt",
+		[]byte(uniprotText),
+		0444,
+	)
+
+	expected := &database{
+		"A0A024R1R8": &databaseEntry{
+			Header:   ">tr|A0A024R1R8|A0A024R1R8_HUMAN HCG2014768, isoform CRA_a OS=Homo sapiens (Human) OX=9606 GN=ENSG00000225528 PE=4 SV=1",
+			Sequence: "MSSHEGGKKKALKQPKKQAKEMDEEEKAFKQKQKEEQKKLEVLKAKVVGKGPLATGGIKKSGKK",
+		},
+		"Q9BUL8": &databaseEntry{
+			Header: ">sp|Q9BUL8|PDC10_HUMAN Programmed cell death protein 10 OS=Homo sapiens (Human) OX=9606 GN=PDCD10 PE=1 SV=1",
+			Sequence: "MRMTMEEMKNEAETTSMVSMPLYAVMYPVFNELERVNLSAAQTLRAAFIKAEKENPGLTQ" +
+				"DIIMKILEKKSVEVNFTESLLRMAADDVEEYMIERPEPEFQDLNEKARALKQILSKIPDE" +
+				"INDRVRFLQTIKDIASAIKELLDTVNNVFKKYQYQNRRALEHQKKEFVKYSKSFSDTLKT" +
+				"YFKDGKAINVFVSANRLIHQTNLILQTFKTVA",
+		},
+	}
+	assert.Equal(t, expected, readFasta("test/uniprot.txt"), "should read fasta sequences")
+}

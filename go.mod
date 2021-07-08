@@ -1,4 +1,4 @@
-module github.com/knightjdr/parse-signal-peptides
+module github.com/gingraslab/remove-signal-peptides
 
 go 1.13
 

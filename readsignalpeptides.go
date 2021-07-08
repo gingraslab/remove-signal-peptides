@@ -17,10 +17,10 @@ func readSignalPeptides(filename string) map[string]int {
 	}
 	defer file.Close()
 
-	reSignal := regexp.MustCompile(`^SIGNAL 1 (\d+)`)
+	reSignal := regexp.MustCompile(`^SIGNAL 1..(\d+)`)
 
 	reader := initializeReader(file)
-	signalPeptides := make(map[string]int, 0)
+	signalPeptides := make(map[string]int)
 
 	for {
 		line, err := reader.Read()

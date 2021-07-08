@@ -2,8 +2,8 @@
 package main
 
 func main() {
-	fastaFile := "./files/human_29-9-2019.fasta"
-	peptideSequences := "./files/human-signal-peptides.txt"
+	fastaFile := "./files/human.fasta"
+	peptideSequences := "./files/human-signal-peptides.tab"
 	outFile := "./files/mature-sequences.txt"
 
 	uniprotdatabase := readFasta(fastaFile)

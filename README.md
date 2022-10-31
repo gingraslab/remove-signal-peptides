@@ -22,22 +22,22 @@ go build
 1. UniProt database in fasta format. These can be downloaded by searching, for example, for reviewed human entries and downloading in fasta format
 
 ```
-https://www.uniprot.org/uniprot/?query=*&fil=reviewed%3Ayes+AND+organism%3A%22Homo+sapiens+%28Human%29+%5B9606%5D%22&sort=score
+https://www.uniprot.org/uniprotkb?facets=model_organism%3A9606%2Creviewed%3Atrue&query=%2A
 ```
    
 2. List of signal peptides.
 
 The list of signal peptides can be generated at UniProt with the following search:
 ```
-https://www.uniprot.org/uniprot/?query=annotation%3A%28type%3Asignal%29&sort=score
+https://www.uniprot.org/uniprotkb?query=(ft_signal:*)
 ```
 
 and then filtering by other criteria such as species, reviewed, etc. For reviewed human sequences, the url would be
 ```
-https://www.uniprot.org/uniprot/?query=annotation:(type:signal)&fil=reviewed%3Ayes+AND+organism%3A%22Homo+sapiens+%28Human%29+%5B9606%5D%22&sort=score
+https://www.uniprot.org/uniprotkb?facets=model_organism%3A9606%2Creviewed%3Atrue&query=%28ft_signal%3A%2A%29
 ```
 
-And finally add a column to the results table for signal peptides. Click the `Columns` button above the table and look under PTM/Processing. Then download all results as a tab-separated file.
+And finally add a column to the results table for signal peptides. Click the `Customize columns` button above the table and look under PTM/Processing. Then download all results as a tab-separated (TSV) file.
 
 ## Run
 
@@ -50,7 +50,7 @@ go build
 
 3. Run
 ```
-remove-signal-peptides
+./remove-signal-peptides
 ```
 
 4. Output: `./files/mature-sequences.txt`

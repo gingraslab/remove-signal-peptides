@@ -37,7 +37,7 @@ and then filtering by other criteria such as species, reviewed, etc. For reviewe
 https://www.uniprot.org/uniprotkb?facets=model_organism%3A9606%2Creviewed%3Atrue&query=%28ft_signal%3A%2A%29
 ```
 
-And finally add a column to the results table for signal peptides. Click the `Customize columns` button above the table and look under PTM/Processing. Then download all results as a tab-separated (TSV) file.
+And finally add a column to the results table for signal peptides. Click the `Customize columns` button above the table and look under PTM/Processing. Then download all results as a tab-separated (TSV) file. Ensure the `Signal peptide` column is the seventh column in the download file.
 
 ## Run
 
